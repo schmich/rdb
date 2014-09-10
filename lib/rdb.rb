@@ -60,6 +60,18 @@ class CommandHandler
     }
   end
 
+  def process
+    @access.synchronize {
+      {
+        id: Process.pid,
+        argv: ARGV,
+        script: $0,
+        env: ENV.to_h,
+        config: RbConfig::CONFIG
+      }
+    }
+  end
+
   def locals
     @access.synchronize {
       while !@waiting
@@ -171,6 +183,9 @@ class CommandHandler
 
       @mutex.synchronize {
         @waiting = true
+        # TODO: Fix this synchronization. Using a condition variable here
+        # triggers Ruby's deadlock detection, so for now, we use a limited
+        # sleep with repeated checking.
         while @command_queue.empty?
           sleep 0.1
         end

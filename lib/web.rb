@@ -23,8 +23,13 @@ get '/threads' do
   json threads
 end
 
+get '/process' do
+  json({ process: client.process })
+end
+
 get '/source' do
   path = params[:path]
+  # TODO: Seems insecure, any way to fix this?
   File.read(path)
 end
 

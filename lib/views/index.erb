@@ -1,62 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="rdb" ng-controller="MainCtrl">
 <head>
+  <title ng-if="!process">rdb &ndash; disconnected</title>
+  <title ng-if="process">rdb &ndash; connected: {{process.id}}</title>
   <meta name="viewport" content="user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width">
   <script src="/angular.min.js"></script>
   <script src="/app.js"></script>
   <script src="/ace/ace.js"></script>
   <link rel="stylesheet" type="text/css" href="/style.css" />
 </head>
-<body ng-app="rdb" ng-controller="MainCtrl">
-  <div class="toolbar">
-    <div ng-if="running">
-      <a ng-click="pause()" href="">Pause</a>
-    </div>
-    <div ng-if="!running">
-      <a ng-click="resume()" href="" class="btn">Resume</a>
-      <a ng-click="stepIn()" href="" class="btn">Step In</a>
-      <a ng-click="stepOver()" href="" class="btn">Step Over</a>
-      <a ng-click="stepOut()" href="" class="btn">Step Out</a>
-    </div>
-  </div>
-  <div class="container">
-    <div class="sidebar">
-      <ul>
-        <li class="group">
-          <h3>Threads <span class="stat">{{threads.length}}</span></h3>
-          <ul class="threads">
-            <li ng-class="{ 'thread': true, 'active': thread == activeThread }" ng-repeat="thread in threads">
-              <a href="">{{thread.backtrace[0].method}}</a>
-            </li>
-          </ul>
-        </li>
-        <li class="group">
-          <h3>Stack <span class="stat">{{activeThread.backtrace.length}}</span></h3>
-          <ul class="frames">
-            <li ng-class="{ 'frame': true, 'active': frame == activeFrame }" ng-repeat="frame in activeThread.backtrace">
-              <a ng-click="setActiveFrame(frame)" href="">{{frame.method}}</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <div class="content">
-      <div ng-show="!running">
-        <div ng-show="currentSource">
-          <pre id="editor" data-ace="" data-ng-model="currentSource"></pre>
-        </div>
-        <div class="expression">
-          <input placeholder="Expression" type="text" ng-model="expression" />
-          <input type="submit" value="Evaluate" ng-click="evaluate(expression)" />
-          <div class="value">{{expressionValue}}</div>
-        </div>
+<body>
+  <div class="main-container">
+    <div class="toolbar">
+      <div ng-if="running">
+        <a ng-click="pause()" href="">Pause</a>
       </div>
-      <h2>Locals</h2>
-      <ul>
-        <li ng-repeat="(name, value) in locals">
-          {{name}}: {{value}}
-        </li>
-      </ul>
+      <div ng-if="!running">
+        <a ng-click="resume()" href="" class="btn">Resume</a>
+        <a ng-click="stepIn()" href="" class="btn">Step In</a>
+        <a ng-click="stepOver()" href="" class="btn">Step Over</a>
+        <a ng-click="stepOut()" href="" class="btn">Step Out</a>
+      </div>
+    </div>
+    <div class="content-container">
+      <div class="sidebar">
+        <ul>
+          <li class="group">
+            <h3>Threads <span class="stat">{{threads.length}}</span></h3>
+            <ul class="threads">
+              <li ng-class="{ 'thread': true, 'active': thread == activeThread }" ng-repeat="thread in threads">
+                <a href="">{{thread.backtrace[0].method}}</a>
+              </li>
+            </ul>
+          </li>
+          <li class="group">
+            <h3>Stack <span class="stat">{{activeThread.backtrace.length}}</span></h3>
+            <ul class="frames">
+              <li ng-class="{ 'frame': true, 'active': frame == activeFrame }" ng-repeat="frame in activeThread.backtrace">
+                <a ng-click="setActiveFrame(frame)" href="">{{frame.method}}</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="source-container">
+        <pre id="source-editor" data-ace="" data-ng-model="currentSource"></pre>
+      </div>
+      <div class="expr-container">
+        <pre id="expr-editor"></pre>
+      </div>
     </div>
   </div>
 </body>

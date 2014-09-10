@@ -1,0 +1,33 @@
+- File selector at top of source editor
+  - Populate with every file seen so far
+- Ability to open file@line in $EDITOR
+- Locals window
+- Params window (with locals?)
+- Watch window
+  - Custom user expressions
+- Object explorer
+  - Tree view
+  - Show class names
+  - Show circular references like node
+- Breakpoint setting
+- Breakpoints window
+- Tracepoints
+  - Like VS Debugger
+- stdout/stderr viewer ("Console" window)
+- Exception reporter
+- Have target launch webserver itself
+- Auto-open browser
+- Gemify library
+- Preserve settings
+  - Breakpoints
+  - Watches
+- Settings
+  - Server port
+  - Bind interface
+- Expression tooltips
+  - Hovering over expressions in source editor shows evaluated value
+- Show graphs while running
+  - Mem usage
+  - CPU usage
+  - Network/disk usage
+- Expose ARGV/ARGC, env, and config somewhere (from GET /process)

@@ -1,18 +1,24 @@
 body {
-  font: 14pt 'Segoe UI';
+  font: 14pt 'Segoe UI', 'Helvetica Neue';
   background: #f7f7f7;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  height: 100vh;
+  display: -webkit-flex;
+  display: flex;
 }
-h1, h2 {
-  font-family: Calibri;
-  font-weight: normal;
+.source-container, .expr-container {
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: column;
+  -webkit-flex: 1;
+  flex: 1;
 }
-#editor {
-  position: relative;
-  height: 600px;
+#source-editor, #expr-editor {
+  -webkit-flex: 1;
+  flex: 1;
   margin: 0;
-  width: 100%;
   font: 12pt Consolas, Monaco;
   border: 1px solid #eee;
 }
@@ -35,7 +41,7 @@ a.btn {
   font-size: 12pt;
   color: white;
   margin: 0;
-  padding: 7px 20px 10px 20px;
+  padding: 10px 10px 10px 10px;
   display: inline-block;
   width: 80px;
   text-align: center;
@@ -44,10 +50,13 @@ a.btn {
 .toolbar a.btn:hover {
   background: #9b1c16;
 }
-.container {
+.content-container {
   display: -webkit-flex;
   display: flex;
+  flex-flow: row;
   overflow-x: hidden;
+  -webkit-flex: 1;
+  flex: 1;
 }
 .sidebar {
   -webkit-flex: 0 0 200px;
@@ -91,13 +100,11 @@ a.btn {
 .sidebar .active {
   background: #ddd;
 }
-.content {
+.main-container {
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: column;
+  min-height: 100%;
   -webkit-flex: 1;
   flex: 1;
-}
-.expression input {
-  font-size: 14pt;
-}
-.expression .value {
-  display: inline-block;
 }

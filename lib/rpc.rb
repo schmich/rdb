@@ -24,7 +24,7 @@ class RpcServer
         method = obj['method'].to_sym
         opts = Hash[obj['params'].map { |k, v| [k.to_sym, v] }]
 
-        puts "---> call #{method}"
+        puts "---> #{method}"
 
         if opts.empty?
           response = @handler.send(method)
@@ -34,7 +34,7 @@ class RpcServer
 
         client.put MessagePack.pack(response)
 
-        puts "<--- ret #{method}"
+        puts "<--- #{method}"
       rescue => e
         puts ">>> ERROR: #{e}"
         puts ">>> #{e.backtrace}"
