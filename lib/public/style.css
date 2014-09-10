@@ -1,0 +1,103 @@
+body {
+  font: 14pt 'Segoe UI';
+  background: #f7f7f7;
+  margin: 0;
+  padding: 0;
+}
+h1, h2 {
+  font-family: Calibri;
+  font-weight: normal;
+}
+#editor {
+  position: relative;
+  height: 600px;
+  margin: 0;
+  width: 100%;
+  font: 12pt Consolas, Monaco;
+  border: 1px solid #eee;
+}
+.active-command {
+  position: absolute;
+  background: rgb(255, 251, 109);
+  outline: 1px solid rgb(235, 231, 089);
+}
+.ace_active-line {
+  background: inherit !important;
+}
+.toolbar {
+  background: #cc342d;
+  font-size: 0;
+}
+a.btn {
+  text-decoration: none;
+}
+.toolbar a.btn {
+  font-size: 12pt;
+  color: white;
+  margin: 0;
+  padding: 7px 20px 10px 20px;
+  display: inline-block;
+  width: 80px;
+  text-align: center;
+  vertical-align: middle;
+}
+.toolbar a.btn:hover {
+  background: #9b1c16;
+}
+.container {
+  display: -webkit-flex;
+  display: flex;
+  overflow-x: hidden;
+}
+.sidebar {
+  -webkit-flex: 0 0 200px;
+  flex: 0 0 200px;
+  padding-top: 20px;
+}
+.sidebar .group {
+  margin-bottom: 20px;
+}
+.sidebar .group h3 {
+  margin: 0;
+  padding: 3px 10px 6px 10px;
+  background: #eee;
+  font-size: 13pt;
+  font-weight: normal;
+}
+.sidebar .group .stat {
+  float: right;
+  font-size: smaller;
+  margin-top: 2px;
+  margin-right: 5px;
+}
+.sidebar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.sidebar ul a {
+  color: #333;
+  padding: 5px 10px;
+  text-decoration: none;
+  display: block;
+}
+.sidebar ul a:hover {
+  background: #cc342d;
+  color: white;
+}
+.sidebar ul.threads, .sidebar ul.frames {
+  font-size: 12pt;
+}
+.sidebar .active {
+  background: #ddd;
+}
+.content {
+  -webkit-flex: 1;
+  flex: 1;
+}
+.expression input {
+  font-size: 14pt;
+}
+.expression .value {
+  display: inline-block;
+}
