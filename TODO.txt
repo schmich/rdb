@@ -31,3 +31,9 @@
   - CPU usage
   - Network/disk usage
 - Expose ARGV/ARGC, env, and config somewhere (from GET /process)
+- Cover usage scenarios
+  - Launch
+  - Attach
+  - Rails/Sinatra/Padrino
+  - Thin/WEBRick/Puma/Unicorn
+  - User-invoked

@@ -7,19 +7,22 @@
   <script src="/angular.min.js"></script>
   <script src="/app.js"></script>
   <script src="/ace/ace.js"></script>
-  <link rel="stylesheet" type="text/css" href="/style.css" />
+  <link rel="stylesheet" type="text/css" href="/lato.css">
+  <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
   <div class="main-container">
     <div class="toolbar">
-      <div ng-if="running">
-        <a ng-click="pause()" href="">Pause</a>
-      </div>
-      <div ng-if="!running">
-        <a ng-click="resume()" href="" class="btn">Resume</a>
-        <a ng-click="stepIn()" href="" class="btn">Step In</a>
-        <a ng-click="stepOver()" href="" class="btn">Step Over</a>
-        <a ng-click="stepOut()" href="" class="btn">Step Out</a>
+      <div class="commands">
+        <div ng-if="running">
+          <a ng-click="pause()" href="">Pause</a>
+        </div>
+        <div ng-if="!running">
+          <a ng-click="resume()" href="" class="btn">Resume</a>
+          <a ng-click="stepIn()" href="" class="btn">Step In</a>
+          <a ng-click="stepOver()" href="" class="btn">Step Over</a>
+          <a ng-click="stepOut()" href="" class="btn">Step Out</a>
+        </div>
       </div>
     </div>
     <div class="content-container">

@@ -1,5 +1,5 @@
 body {
-  font: 14pt 'Segoe UI', 'Helvetica Neue';
+  font: 14pt Lato;
   background: #f7f7f7;
   margin: 0;
   padding: 0;
@@ -19,7 +19,7 @@ body {
   -webkit-flex: 1;
   flex: 1;
   margin: 0;
-  font: 12pt Consolas, Monaco;
+  font: 12pt Consolas, Monaco, "Courier New", monospace;
   border: 1px solid #eee;
 }
 .active-command {
@@ -31,8 +31,14 @@ body {
   background: inherit !important;
 }
 .toolbar {
+  display: -webkit-flex;
+  display: flex;
   background: #cc342d;
   font-size: 0;
+}
+.toolbar .commands {
+  -webkit-flex: 1;
+  flex: 1;
 }
 a.btn {
   text-decoration: none;
@@ -41,7 +47,7 @@ a.btn {
   font-size: 12pt;
   color: white;
   margin: 0;
-  padding: 10px 10px 10px 10px;
+  padding: 9px 10px 12px 10px;
   display: inline-block;
   width: 80px;
   text-align: center;
