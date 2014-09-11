@@ -60,9 +60,10 @@ put '/step_out' do
   json({ result: true })
 end
 
-get '/eval' do
-  expr = params[:expr]
-  frame = params[:frame]
+put '/eval' do
+  params = JSON.parse(request.body.read)
+  expr = params['expr']
+  frame = params['frame']
   json client.eval(expr: expr, frame: frame.to_i)
 end
 
