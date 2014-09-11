@@ -37,3 +37,7 @@
   - Rails/Sinatra/Padrino
   - Thin/WEBRick/Puma/Unicorn
   - User-invoked
+- Command history for expression evaluator
+  - e.g. up/down arrow to recall previous commands
+  - Escape to clear current command
+- /eval: handle invalid expressions (e.g. "x****2")

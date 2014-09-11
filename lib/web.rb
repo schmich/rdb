@@ -2,6 +2,8 @@ require 'sinatra'
 require 'sinatra/json'
 require 'rpc'
 
+# TODO: Parameter validation on all calls.
+
 client = RpcClient.new('localhost', 4444)
 
 get '/' do
@@ -60,7 +62,8 @@ end
 
 get '/eval' do
   expr = params[:expr]
-  json client.eval(expr: expr)
+  frame = params[:frame]
+  json client.eval(expr: expr, frame: frame.to_i)
 end
 
 get '/locals' do

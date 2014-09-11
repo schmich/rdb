@@ -89,14 +89,15 @@ class CommandHandler
     }
   end
 
-  def eval(expr: nil)
+  def eval(expr: nil, frame: nil)
     @access.synchronize {
       while !@waiting
       end
 
       context = Byebug.thread_context(Thread.main)
       begin
-        return { success: context.frame_binding.eval(expr).inspect }
+        binding = context.frame_binding(frame)
+        return { success: binding.eval(expr).inspect }
       rescue => e
         return { failure: e.inspect }
       end
