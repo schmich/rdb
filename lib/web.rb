@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/json'
 require 'rpc'
+require 'json'
 
 # TODO: Parameter validation on all calls.
 
