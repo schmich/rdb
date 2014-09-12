@@ -65,17 +65,17 @@ put '/resume' do
   json({ running: running })
 end
 
-put '/step_in' do
+put '/step-in' do
   client.step_in
   json({ result: true })
 end
 
-put '/step_over' do
+put '/step-over' do
   client.step_over
   json({ result: true })
 end
 
-put '/step_out' do
+put '/step-out' do
   client.step_out
   json({ result: true })
 end
