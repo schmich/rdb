@@ -23,7 +23,6 @@
           <a ng-click="stepIn()" href="" class="btn">Step In</a>
           <a ng-click="stepOver()" href="" class="btn">Step Over</a>
           <a ng-click="stepOut()" href="" class="btn">Step Out</a>
-          <a ng-click="gotoCurrent()" ng-if="!isCurrent" href="" class="btn">Current</a>
         </span>
       </div>
     </div>
@@ -34,7 +33,7 @@
             <h3>Threads <span class="stat">{{threads.length}}</span></h3>
             <ul class="threads">
               <li ng-class="{ 'thread': true, 'active': thread == activeThread }" ng-repeat="thread in threads">
-                <a class="nav" href="">{{thread.backtrace[0].method}}</a>
+                <a class="nav" href="" ng-click="setActiveThread(thread)">{{thread.backtrace[0].method}}</a>
               </li>
             </ul>
           </li>
@@ -52,10 +51,10 @@
         </ul>
       </div>
       <div class="source-container">
-        <pre id="source-editor" data-ace="" data-ng-model="currentSource"></pre>
+        <pre id="source-editor" data-ace="" data-ng-model="currentSource" ng-controller="SourceEditCtrl"></pre>
       </div>
       <div class="expr-container">
-        <pre id="expr-editor" ng-controller="ExprCtrl"></pre>
+        <pre id="expr-editor" ng-controller="ExpressionEditCtrl"></pre>
       </div>
     </div>
   </div>

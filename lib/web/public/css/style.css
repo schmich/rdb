@@ -19,13 +19,8 @@ body {
   -webkit-flex: 1;
   flex: 1;
   margin: 0;
-  font: 12pt Consolas, Monaco, "Courier New", monospace;
+  font: 11pt Consolas, Monaco, "Courier New", monospace;
   border: 1px solid #eee;
-}
-.active-command {
-  position: absolute;
-  background: rgb(255, 251, 109);
-  outline: 1px solid rgb(235, 231, 089);
 }
 .toolbar {
   display: -webkit-flex;
