@@ -7,6 +7,19 @@
 .ace_gutter-cell.ace_breakpoint {
   background: #faa url('/img/breakpoint.png') no-repeat 3px 3px;
 }
+.ace_gutter-cell.ace_breakpoint:hover {
+  background-color: #f77;
+}
+.ace_gutter-cell:not(.ace_breakpoint):hover {
+  background: #faa url('/img/breakpoint.png') no-repeat 3px 3px;
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+  filter: gray;
+  opacity: 0.4;
+}
 .live-command {
   position: absolute;
   background: rgb(255, 251, 109);
