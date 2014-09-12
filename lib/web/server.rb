@@ -38,6 +38,8 @@ end
 
 # TODO: Make this secure in remote situations.
 # Remote callers can request any file.
+# TODO: Lots of security checks needed here to
+# prevent arbitrary execution.
 post '/open' do
   params = JSON.parse(request.body.read)
   path = params['path']
@@ -87,4 +89,22 @@ end
 
 get '/locals' do
   json client.locals
+end
+
+get '/breakpoints' do
+  json client.breakpoints
+end
+
+post '/breakpoints' do
+  params = JSON.parse(request.body.read)
+  file = params['file']
+  line = params['line']
+  id = client.add_breakpoint(file: file, line: line)
+  json({ id: id })
+end
+
+delete '/breakpoints/:id' do
+  id = params[:id].to_i
+  result = client.remove_breakpoint(id: id)
+  json({ success: result })
 end

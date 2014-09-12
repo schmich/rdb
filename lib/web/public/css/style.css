@@ -129,3 +129,9 @@ a.btn {
   -webkit-flex: 1;
   flex: 1;
 }
+.ace_gutter-cell {
+  cursor: pointer;
+}
+.ace_gutter-cell.ace_breakpoint {
+  background: #faa url('/img/breakpoint.png') no-repeat 3px 3px;
+}

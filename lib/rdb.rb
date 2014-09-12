@@ -104,13 +104,38 @@ class CommandHandler
     }
   end
 
+  def breakpoints
+    @access.synchronize {
+      Byebug.breakpoints.map do |bp|
+        {
+          id: bp.id,
+          line: bp.pos,
+          path: bp.source
+        }
+      end
+    }
+  end
+
+  def add_breakpoint(file: nil, line: nil)
+    @access.synchronize {
+      breakpoint = Byebug::Breakpoint.add(file, line)
+      breakpoint.id
+    }
+  end
+
+  def remove_breakpoint(id: id)
+    @access.synchronize {
+      breakpoint = Byebug::Breakpoint.remove(id)
+      true
+    }
+  end
+
   def pause
     @access.synchronize {
       context = Byebug.thread_context(Thread.main)
       context.interrupt
 
-      @running = false
-      @running
+      false
     }
   end
 
@@ -124,8 +149,7 @@ class CommandHandler
         @resource.signal
       }
 
-      @running = true
-      @running
+      true
     }
   end
 
@@ -175,7 +199,6 @@ class CommandHandler
   end
 
   def next_command
-    @running = false
     if @command_queue.empty?
       @mutex.synchronize {
         @waiting = true
@@ -188,7 +211,6 @@ class CommandHandler
         @waiting = false
       }
     end
-    @running = true
 
     return @command_queue.shift
   end
@@ -197,6 +219,10 @@ class CommandHandler
     @access.synchronize {
       @running
     }
+  end
+
+  def running=(running)
+    @running = running;
   end
 
   private
@@ -222,7 +248,7 @@ class RemoteCommandProcessor < Byebug::Processor
   end
   
   def at_breakpoint(context, breakpoint)
-    puts '> at breakpoint'
+    puts '> at_breakpoint'
   end
 
   def at_catchpoint(context, excpt)
@@ -245,10 +271,12 @@ class RemoteCommandProcessor < Byebug::Processor
 
   def process_commands(context, file, line)
     puts "> process_commands @ #{file}:#{line} in #{Thread.current}"
+    @handler.running = false
     loop do
       command = @handler.next_command
       break if command.call(context)
     end
+    @handler.running = true
   end
 end
 
