@@ -175,13 +175,8 @@ class CommandHandler
   end
 
   def next_command
+    @running = false
     if @command_queue.empty?
-      puts '> wait'
-      puts '> threads:'
-      Thread.list.each do |thread|
-        puts ">>> #{thread}: " + thread.status.to_s + ((thread == Thread.current) ? ' (current)' : '') + (thread == Thread.main ? ' (main)' : '')
-      end
-
       @mutex.synchronize {
         @waiting = true
         # TODO: Fix this synchronization. Using a condition variable here
@@ -193,6 +188,7 @@ class CommandHandler
         @waiting = false
       }
     end
+    @running = true
 
     return @command_queue.shift
   end

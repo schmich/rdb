@@ -16,15 +16,14 @@
   <div class="main-container">
     <div class="toolbar">
       <div class="commands">
-        <div ng-if="running">
-          <a ng-click="pause()" href="">Pause</a>
-        </div>
-        <div ng-if="!running">
-          <a ng-click="resume()" href="" class="btn">Resume</a>
+        <span ng-if="running"><a ng-click="pause()" href="" class="btn">Pause</a></span>
+        <span ng-if="!running">
+          <a ng-click="resume()" href="" class="btn">Continue</a>
           <a ng-click="stepIn()" href="" class="btn">Step In</a>
           <a ng-click="stepOver()" href="" class="btn">Step Over</a>
           <a ng-click="stepOut()" href="" class="btn">Step Out</a>
-        </div>
+          <a ng-click="gotoCurrent()" ng-if="!isCurrent" href="" class="btn">Current</a>
+        </span>
       </div>
     </div>
     <div class="content-container">

@@ -1,6 +1,5 @@
 - File selector at top of source editor
   - Populate with every file seen so far
-- Ability to open file@line in $EDITOR
 - Locals window
 - Params window (with locals?)
 - Watch window
@@ -33,7 +32,7 @@
 - Expose ARGV/ARGC, env, and config somewhere (from GET /process)
 - Cover usage scenarios
   - Launch
-  - Attach
+  - Attach/dettach/re-attach
   - Rails/Sinatra/Padrino
   - Thin/WEBRick/Puma/Unicorn
   - User-invoked
