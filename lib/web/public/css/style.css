@@ -27,9 +27,6 @@ body {
   background: rgb(255, 251, 109);
   outline: 1px solid rgb(235, 231, 089);
 }
-.ace_active-line {
-  background: inherit !important;
-}
 .toolbar {
   display: -webkit-flex;
   display: flex;
@@ -128,10 +125,4 @@ a.btn {
   min-height: 100%;
   -webkit-flex: 1;
   flex: 1;
-}
-.ace_gutter-cell {
-  cursor: pointer;
-}
-.ace_gutter-cell.ace_breakpoint {
-  background: #faa url('/img/breakpoint.png') no-repeat 3px 3px;
 }
