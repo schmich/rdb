@@ -36,6 +36,23 @@ get '/source' do
   File.read(path)
 end
 
+# TODO: Make this secure in remote situations.
+# Remote callers can request any file.
+post '/open' do
+  params = JSON.parse(request.body.read)
+  path = params['path']
+  line = params['line']
+
+  # TODO: Do not hardcode editor.
+  if line.nil?
+   command = "gvim \"#{path}\""
+  else
+   command = "gvim \"#{path}\" +\"#{line}\""
+  end
+
+  system(command)
+end
+
 put '/pause' do
   running = client.pause
   json({ running: running })

@@ -33,7 +33,7 @@
             <h3>Threads <span class="stat">{{threads.length}}</span></h3>
             <ul class="threads">
               <li ng-class="{ 'thread': true, 'active': thread == activeThread }" ng-repeat="thread in threads">
-                <a href="">{{thread.backtrace[0].method}}</a>
+                <a class="nav" href="">{{thread.backtrace[0].method}}</a>
               </li>
             </ul>
           </li>
@@ -41,10 +41,10 @@
             <h3>Stack <span class="stat">{{activeThread.backtrace.length}}</span></h3>
             <ul class="frames">
               <li ng-class="{ 'frame': true, 'active': frame == activeFrame }" ng-repeat="frame in activeThread.backtrace">
-                <a ng-click="setActiveFrame(frame)" href="">
+                <div class="nav" ng-click="setActiveFrame(frame)">
                   <span class="method">{{frame.method}}</span>
-                  <span class="location">{{frame.file}}:{{frame.line}}</span>
-                </a>
+                  <a class="location" ng-click="openFile(frame.path, frame.line)" href="">{{frame.file}}:{{frame.line}}</a>
+                </div>
               </li>
             </ul>
           </li>

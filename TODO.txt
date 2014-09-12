@@ -20,9 +20,6 @@
 - Preserve settings
   - Breakpoints
   - Watches
-- Settings
-  - Server port
-  - Bind interface
 - Expression tooltips
   - Hovering over expressions in source editor shows evaluated value
 - Show graphs while running
@@ -43,3 +40,6 @@
 - Autocomplete for evaluation
   - Discover from target
   - Tab to complete
+- Use RUBYOPT/RUBYLIB to autoload debugger
+  - RUBYLIB=/path/to/rdb/lib
+  - RUBYOPT=-rrdb
