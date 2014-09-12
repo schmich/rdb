@@ -11,9 +11,9 @@ class RpcServer
   def listen
     loop do
       begin
-        puts 'wait for client'
+        puts '> waiting for command'
         request, client = @channel.get_ext
-        puts 'got client'
+        puts '> got command'
       rescue Errno::EWOULDBLOCK, Errno::EAGAIN => e
         retry
       end

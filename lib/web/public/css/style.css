@@ -98,10 +98,20 @@ a.btn {
 }
 .sidebar ul a:hover {
   background: #cc342d;
-  color: white;
+  color: #fff;
 }
 .sidebar ul.threads, .sidebar ul.frames {
   font-size: 12pt;
+}
+.frame .method {
+  display: block;
+}
+.frame .location {
+  color: #888;
+  font-size: smaller;
+}
+.frame a:hover .location {
+  color: #fff;
 }
 .sidebar .active {
   background: #ddd;

@@ -25,4 +25,5 @@ x = 10
 loop do
   x += foo(x)
   puts x
+  sleep 1
 end
