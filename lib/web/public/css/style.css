@@ -32,6 +32,17 @@ body {
   -webkit-flex: 1;
   flex: 1;
 }
+.toolbar .settings {
+  width: 18px;
+  height: 18px;
+  align-self: center;
+  margin-right: 10px;
+  opacity: 0.9;
+}
+.toolbar .settings:hover {
+  opacity: 1.0;
+  cursor: pointer;
+}
 a.btn {
   text-decoration: none;
 }
