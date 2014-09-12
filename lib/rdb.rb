@@ -31,7 +31,7 @@ class CommandHandler
         stack_size = context.calced_stack_size
 
         (0...stack_size).each do |i|
-          path = context.frame_file(i)
+          path = File.expand_path(context.frame_file(i))
           line = context.frame_line(i)
           klass = context.frame_class(i).to_s
           klass = nil if klass.empty?
@@ -222,7 +222,7 @@ class CommandHandler
   end
 
   def running=(running)
-    @running = running;
+    @running = running
   end
 
   private
