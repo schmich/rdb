@@ -11,10 +11,19 @@
   background-color: #f77;
 }
 .ace_gutter-cell:not(.ace_breakpoint):hover {
-  background: #ddd url('/img/breakpoint-light.png') no-repeat 3px 2px;
+  background: #fdd url('/img/breakpoint-light.png') no-repeat 3px 2px;
 }
-.live-command {
+.ace_gutter-cell.live-command:not(.ace_breakpoint):hover {
+  background: #ccc url('/img/breakpoint-live-command-light.png') no-repeat 3px 2px;
+}
+.ace_content .live-command {
   position: absolute;
   background: rgb(255, 251, 109);
   outline: 1px solid rgb(235, 231, 089);
+}
+.ace_gutter-cell.live-command {
+  background: #ccc url('/img/live-command.png') no-repeat 3px 2px;
+}
+.ace_gutter-cell.live-command.ace_breakpoint {
+  background: #ccc url('/img/breakpoint-live-command.png') no-repeat 3px 2px;
 }
