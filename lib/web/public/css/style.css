@@ -22,6 +22,17 @@ body {
   font: 11pt Consolas, Monaco, "Courier New", monospace;
   border: 1px solid #eee;
 }
+.windows {
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: column;
+  -webkit-flex: 1;
+  flex: 1;
+}
+.watches {
+  -webkit-flex: 1;
+  flex: 1;
+}
 .toolbar {
   display: -webkit-flex;
   display: flex;

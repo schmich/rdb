@@ -1,5 +1,6 @@
 require 'byebug'
 require 'messaging'
+require 'inspector'
 require 'thread'
 
 class CommandServer < Messaging::Server
@@ -99,8 +100,9 @@ class CommandServer < Messaging::Server
       context = Byebug.thread_context(Thread.main)
       begin
         binding = context.frame_binding(frame)
-        return { success: binding.eval(expr).inspect }
-      rescue => e
+        value = Inspector.inspect(binding.eval(expr))
+        return { success: value }
+      rescue Exception => e
         return { failure: e.inspect }
       end
     }
