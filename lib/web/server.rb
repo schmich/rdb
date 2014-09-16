@@ -17,7 +17,21 @@ class CommandClient < Messaging::Client
 
   def breakpoint
     for client in @event_clients
-      data = JSON.dump(event: :breakpoint)
+      data = JSON.dump(event: 'breakpoint-hit')
+      client.push(:data => data)
+    end
+  end
+
+  def breakpoint_created
+    for client in @event_clients
+      data = JSON.dump(event: 'breakpoint-created')
+      client.push(:data => data)
+    end
+  end
+
+  def breakpoint_deleted
+    for client in @event_clients
+      data = JSON.dump(event: 'breakpoint-deleted')
       client.push(:data => data)
     end
   end
@@ -124,12 +138,14 @@ post '/breakpoints' do
   file = params['file']
   line = params['line']
   id = client.add_breakpoint(file: file, line: line)
+  client.breakpoint_created
   json({ id: id })
 end
 
 delete '/breakpoints/:id' do
   id = params[:id].to_i
   result = client.remove_breakpoint(id: id)
+  client.breakpoint_deleted
   json({ success: result })
 end
 
