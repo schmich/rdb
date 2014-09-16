@@ -1,17 +1,35 @@
 require 'sinatra'
 require 'sinatra/json'
+require 'sinatra/sse'
 require 'messaging'
 require 'json'
+require 'thin'
 
-# TODO: Parameter validation on all calls.
+include Sinatra::SSE
+
+set :server, 'thin'
 
 class CommandClient < Messaging::Client
+  def initialize(event_clients)
+    super()
+    @event_clients = event_clients
+  end
+
+  def breakpoint
+    for client in @event_clients
+      data = JSON.dump(event: :breakpoint)
+      client.push(:data => data)
+    end
+  end
 end
 
-client = CommandClient.new
+event_clients = []
+client = CommandClient.new(event_clients)
 Thread.new do
   client.connect_listen('localhost', 4444)
 end
+
+# TODO: Parameter validation on all calls.
 
 get '/' do
   erb :index
@@ -113,4 +131,10 @@ delete '/breakpoints/:id' do
   id = params[:id].to_i
   result = client.remove_breakpoint(id: id)
   json({ success: result })
+end
+
+get '/events' do
+  sse_stream do |out|
+    event_clients << out
+  end
 end

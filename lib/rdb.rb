@@ -250,6 +250,7 @@ class RemoteCommandProcessor < Byebug::Processor
   
   def at_breakpoint(context, breakpoint)
     puts '> at_breakpoint'
+    @server.broadcast(:breakpoint)
   end
 
   def at_catchpoint(context, excpt)
