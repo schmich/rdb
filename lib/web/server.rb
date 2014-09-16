@@ -1,11 +1,17 @@
 require 'sinatra'
 require 'sinatra/json'
-require 'rpc'
+require 'messaging'
 require 'json'
 
 # TODO: Parameter validation on all calls.
 
-client = RpcClient.new('localhost', 4444)
+class CommandClient < Messaging::Client
+end
+
+client = CommandClient.new
+Thread.new do
+  client.connect_listen('localhost', 4444)
+end
 
 get '/' do
   erb :index
@@ -16,7 +22,7 @@ get '/running' do
 end
 
 get '/threads' do
-  threads = client.get_threads
+  threads = client.threads
   threads.each do |thread|
     thread['backtrace'].each do |frame|
       frame['file'] = File.basename(frame['path'])

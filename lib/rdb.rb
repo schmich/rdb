@@ -1,9 +1,11 @@
 require 'byebug'
-require 'rpc'
+require 'messaging'
 require 'thread'
 
-class CommandHandler
+class CommandServer < Messaging::Server
   def initialize(debug_thread_group)
+    super()
+
     @debug_thread_group = debug_thread_group
 
     @access = Mutex.new
@@ -15,7 +17,7 @@ class CommandHandler
     @command_queue = []
   end
 
-  def get_threads
+  def threads
     @access.synchronize {
       # TODO: Better sync
       while !@waiting
@@ -123,7 +125,7 @@ class CommandHandler
     }
   end
 
-  def remove_breakpoint(id: id)
+  def remove_breakpoint(id: nil)
     @access.synchronize {
       breakpoint = Byebug::Breakpoint.remove(id)
       true
@@ -237,10 +239,9 @@ class RemoteCommandProcessor < Byebug::Processor
     super(interface)
 
     debug_group = ThreadGroup.new
-    @handler = CommandHandler.new(debug_group)
-    @server = RpcServer.new('localhost', 4444, @handler)
+    @server = CommandServer.new(debug_group)
     thread = Byebug::DebugThread.new do
-      @server.listen
+      @server.listen('0.0.0.0', 4444)
     end
     
     debug_group.add(thread)
@@ -271,12 +272,12 @@ class RemoteCommandProcessor < Byebug::Processor
 
   def process_commands(context, file, line)
     puts "> process_commands @ #{file}:#{line} in #{Thread.current}"
-    @handler.running = false
+    @server.running = false
     loop do
-      command = @handler.next_command
+      command = @server.next_command
       break if command.call(context)
     end
-    @handler.running = true
+    @server.running = true
   end
 end
 
