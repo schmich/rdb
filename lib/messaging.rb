@@ -8,7 +8,8 @@ end
 
 class Messaging::Server
   def initialize
-    @clients = []
+    @sockets = Set.new
+    @clients = {}
     @clients_lock = Mutex.new
   end
 
@@ -18,15 +19,20 @@ class Messaging::Server
     loop do
       begin
         payload, client = channel.get_ext
-      rescue Errno::EWOULDBLOCK, Errno::EAGAIN, Errno::ECONNRESET => e
+      rescue Errno::EWOULDBLOCK, Errno::EAGAIN, Errno::ECONNRESET
         next
       end
 
       begin
         message = Messaging::Message.unpack(payload)
+        # TODO: Hack.
+        socket = client.instance_eval { @connection.socket }
         @clients_lock.synchronize {
-          @clients << client
+          if @sockets.add?(socket)
+            @clients[socket] = client
+          end
         }
+
         handle_message(client, message)
       rescue => e
         puts ">>> Error: #{e}\n#{e.backtrace}"
@@ -34,14 +40,15 @@ class Messaging::Server
     end
   end
 
-  def broadcast(message, params)
-    payload = Messaging::Message.broadcast(message, params)
+  def broadcast(message, *params)
+    payload = Messaging::Message.broadcast(message, params.first || {})
     @clients_lock.synchronize {
-      @clients.reject! { |client|
+      @clients.reject! { |socket, client|
         begin
           client.put(payload)
           false
-        rescue IOError
+        rescue IOError, Errno::ECONNRESET
+          @sockets.delete(socket)
           true
         end
       }
@@ -79,7 +86,6 @@ class Messaging::Client
 
   def connect_listen(host, port)
     @channel = Cod.tcp("#{host}:#{port}")
-
     set_connected
 
     loop do
@@ -88,12 +94,12 @@ class Messaging::Client
   end
 
   def method_missing(symbol, *args, &block)
-    message(symbol, args.first || {})
+    send_message(symbol, args.first || {})
   end
 
   private
 
-  def message(command, params)
+  def send_message(command, params)
     wait_connected
 
     id = @result_id += 1
@@ -157,7 +163,11 @@ class Messaging::Client
   def handle_broadcast(message)
     method = message[:message]
     params = message[:params]
-    self.send(method, params)
+    if params.empty?
+      self.send(method)
+    else
+      self.send(method, params)
+    end
   end
 end
 
