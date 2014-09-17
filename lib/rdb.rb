@@ -4,10 +4,10 @@ require 'inspector'
 require 'thread'
 
 class CommandServer < Messaging::Server
-  def initialize(debug_thread_group)
+  def initialize()
     super()
 
-    @debug_thread_group = debug_thread_group
+    @debug_thread_group = nil
 
     @access = Mutex.new
 
@@ -16,6 +16,17 @@ class CommandServer < Messaging::Server
     @resource = ConditionVariable.new
 
     @command_queue = []
+  end
+
+  def start
+    @debug_thread_group = group = ThreadGroup.new
+
+    thread = Byebug::DebugThread.new do
+      listen('0.0.0.0', 4444)
+    end
+    
+    group.add(thread)
+    group.enclose
   end
 
   def threads
@@ -240,14 +251,8 @@ class RemoteCommandProcessor < Byebug::Processor
   def initialize(interface = Byebug::LocalInterface.new)
     super(interface)
 
-    debug_group = ThreadGroup.new
-    @server = CommandServer.new(debug_group)
-    thread = Byebug::DebugThread.new do
-      @server.listen('0.0.0.0', 4444)
-    end
-    
-    debug_group.add(thread)
-    debug_group.enclose
+    @server = CommandServer.new
+    @server.start
   end
   
   def at_breakpoint(context, breakpoint)
