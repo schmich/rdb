@@ -3,10 +3,44 @@ require 'msgpack'
 require 'thread'
 require 'set'
 
+module RemoteAnnotation
+  def self.extended(klass)
+    klass.instance_exec { 
+      @remote = Set.new
+      @set_remote = false
+    }
+  end
+
+  def remote!
+    self.instance_exec {
+      @set_remote = true
+    }
+  end
+
+  def method_added(method)
+    self.instance_exec {
+      return if !@set_remote
+
+      @remote << method
+      @set_remote = false
+    }
+  end
+
+  def remote?(method)
+    self.instance_exec {
+      @remote.include? method
+    }
+  end
+end
+
 module Messaging
 end
 
 class Messaging::Server
+  def self.inherited(klass)
+    klass.send(:extend, RemoteAnnotation)
+  end
+
   def initialize
     @sockets = Set.new
     @clients = {}
@@ -62,6 +96,10 @@ class Messaging::Server
     command = message[:command]
     params = message[:params]
 
+    if !self.class.remote?(command)
+      raise RuntimeError, "Method is not marked for remote execution: #{command}."
+    end
+
     result = if params.empty?
       self.send(command)
     else
@@ -73,6 +111,10 @@ class Messaging::Server
 end
 
 class Messaging::Client
+  def self.inherited(klass)
+    klass.send(:extend, RemoteAnnotation)
+  end
+
   def initialize
     @connected = false
     @connected_mon = Monitor.new
@@ -163,6 +205,11 @@ class Messaging::Client
   def handle_broadcast(message)
     method = message[:message]
     params = message[:params]
+
+    if !self.class.remote?(method)
+      raise RuntimeError, "Method is not marked for remote execution: #{method}."
+    end
+
     if params.empty?
       self.send(method)
     else

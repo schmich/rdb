@@ -29,6 +29,7 @@ class CommandServer < Messaging::Server
     group.enclose
   end
 
+  remote!
   def threads
     @access.synchronize {
       # TODO: Better sync
@@ -74,6 +75,7 @@ class CommandServer < Messaging::Server
     }
   end
 
+  remote!
   def process
     @access.synchronize {
       {
@@ -86,6 +88,7 @@ class CommandServer < Messaging::Server
     }
   end
 
+  remote!
   def locals
     @access.synchronize {
       while !@waiting
@@ -103,6 +106,7 @@ class CommandServer < Messaging::Server
     }
   end
 
+  remote!
   def eval(expr: nil, frame: nil)
     @access.synchronize {
       while !@waiting
@@ -119,6 +123,7 @@ class CommandServer < Messaging::Server
     }
   end
 
+  remote!
   def breakpoints
     @access.synchronize {
       Byebug.breakpoints.map do |bp|
@@ -131,6 +136,7 @@ class CommandServer < Messaging::Server
     }
   end
 
+  remote!
   def add_breakpoint(file: nil, line: nil)
     @access.synchronize {
       breakpoint = Byebug::Breakpoint.add(file, line)
@@ -138,6 +144,7 @@ class CommandServer < Messaging::Server
     }
   end
 
+  remote!
   def remove_breakpoint(id: nil)
     @access.synchronize {
       breakpoint = Byebug::Breakpoint.remove(id)
@@ -145,6 +152,7 @@ class CommandServer < Messaging::Server
     }
   end
 
+  remote!
   def pause
     @access.synchronize {
       context = Byebug.thread_context(Thread.main)
@@ -154,6 +162,7 @@ class CommandServer < Messaging::Server
     }
   end
 
+  remote!
   def resume
     @access.synchronize {
       @command_queue << proc { |context|
@@ -168,6 +177,7 @@ class CommandServer < Messaging::Server
     }
   end
 
+  remote!
   def step_in
     @access.synchronize {
       @command_queue << proc { |context|
@@ -183,6 +193,7 @@ class CommandServer < Messaging::Server
     }
   end
   
+  remote!
   def step_over
     @access.synchronize {
       @command_queue << proc { |context|
@@ -198,6 +209,7 @@ class CommandServer < Messaging::Server
     }
   end
 
+  remote!
   def step_out
     @access.synchronize {
       @command_queue << proc { |context|
@@ -230,6 +242,7 @@ class CommandServer < Messaging::Server
     return @command_queue.shift
   end
 
+  remote!
   def running?
     @access.synchronize {
       @running

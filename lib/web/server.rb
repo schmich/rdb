@@ -16,6 +16,15 @@ class CommandClient < Messaging::Client
     @event_clients = event_clients
   end
 
+  remote!
+  def step
+    for client in @event_clients
+      data = JSON.dump(event: 'step-hit')
+      client.push(:data => data)
+    end
+  end
+
+  remote!
   def breakpoint
     for client in @event_clients
       data = JSON.dump(event: 'breakpoint-hit')
@@ -33,13 +42,6 @@ class CommandClient < Messaging::Client
   def breakpoint_deleted
     for client in @event_clients
       data = JSON.dump(event: 'breakpoint-deleted')
-      client.push(:data => data)
-    end
-  end
-
-  def step
-    for client in @event_clients
-      data = JSON.dump(event: 'step-hit')
       client.push(:data => data)
     end
   end
