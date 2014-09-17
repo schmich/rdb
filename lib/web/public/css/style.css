@@ -29,9 +29,20 @@ body {
   -webkit-flex: 1;
   flex: 1;
 }
-.watches {
+.environment {
   -webkit-flex: 1;
   flex: 1;
+  overflow: auto;
+  font: 11pt Consolas, Monaco, "Courier New", monospace;
+  background: #fff;
+  border: 1px solid #eee;
+}
+.environment .table th {
+  text-align: left;
+  font-weight: normal;
+}
+.environment .table th, .environment .table td {
+  border-bottom: 1px solid #eee;
 }
 .toolbar {
   display: -webkit-flex;

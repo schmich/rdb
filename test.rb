@@ -17,12 +17,22 @@ t1.join
 t2.join
 =end
 
+class Person
+  def initialize(name)
+    @name = name
+  end
+
+  attr_reader :name
+end
+
 def foo(x)
   x * 3
 end
 
 x = 10
 loop do
+  p = Person.new('Foo')
+  puts p.name
   x += foo(x)
   puts x
   sleep 1

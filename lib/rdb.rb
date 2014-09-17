@@ -103,7 +103,7 @@ class CommandServer < Messaging::Server
         value = Inspector.inspect(binding.eval(expr))
         return { success: true, value: value }
       rescue Exception => e
-        return { failure: true, class: e.class.name, message: e.message }
+        return { success: false, class: e.class.name, message: e.message }
       end
     }
   end
