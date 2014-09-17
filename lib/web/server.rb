@@ -17,21 +17,14 @@ class CommandClient < Messaging::Client
   end
 
   remote!
-  def step
+  def break
     for client in @event_clients
-      data = JSON.dump(event: 'step-hit')
+      data = JSON.dump(event: 'break')
       client.push(:data => data)
     end
   end
 
   remote!
-  def breakpoint
-    for client in @event_clients
-      data = JSON.dump(event: 'breakpoint-hit')
-      client.push(:data => data)
-    end
-  end
-
   def breakpoint_created
     for client in @event_clients
       data = JSON.dump(event: 'breakpoint-created')
@@ -39,6 +32,7 @@ class CommandClient < Messaging::Client
     end
   end
 
+  remote!
   def breakpoint_deleted
     for client in @event_clients
       data = JSON.dump(event: 'breakpoint-deleted')
@@ -149,14 +143,12 @@ post '/breakpoints' do
   file = params['file']
   line = params['line']
   id = client.add_breakpoint(file: file, line: line)
-  client.breakpoint_created
   json(id: id)
 end
 
 delete '/breakpoints/:id' do
   id = params[:id].to_i
   result = client.remove_breakpoint(id: id)
-  client.breakpoint_deleted
   json(success: result)
 end
 

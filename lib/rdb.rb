@@ -140,6 +140,7 @@ class CommandServer < Messaging::Server
   def add_breakpoint(file: nil, line: nil)
     @access.synchronize {
       breakpoint = Byebug::Breakpoint.add(file, line)
+      broadcast(:breakpoint_created)
       breakpoint.id
     }
   end
@@ -148,6 +149,7 @@ class CommandServer < Messaging::Server
   def remove_breakpoint(id: nil)
     @access.synchronize {
       breakpoint = Byebug::Breakpoint.remove(id)
+      broadcast(:breakpoint_deleted)
       true
     }
   end
@@ -270,7 +272,6 @@ class RemoteCommandProcessor < Byebug::Processor
   
   def at_breakpoint(context, breakpoint)
     puts '> at_breakpoint'
-    @server.broadcast(:breakpoint)
   end
 
   def at_catchpoint(context, excpt)
@@ -282,8 +283,8 @@ class RemoteCommandProcessor < Byebug::Processor
   end
 
   def at_line(context, file, line)
-    @server.broadcast(:step)
     puts "> at_line: #{file}:#{line}, reason: #{context.stop_reason}"
+    @server.broadcast(:break)
     process_commands(context, file, line)
   end
 
