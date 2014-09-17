@@ -101,9 +101,9 @@ class CommandServer < Messaging::Server
       begin
         binding = context.frame_binding(frame)
         value = Inspector.inspect(binding.eval(expr))
-        return { success: value }
+        return { success: true, value: value }
       rescue Exception => e
-        return { failure: e.inspect }
+        return { failure: true, class: e.class.name, message: e.message }
       end
     }
   end
