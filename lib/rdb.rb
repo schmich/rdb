@@ -264,6 +264,7 @@ class RemoteCommandProcessor < Byebug::Processor
   end
 
   def at_line(context, file, line)
+    @server.broadcast(:step)
     puts "> at_line: #{file}:#{line}, reason: #{context.stop_reason}"
     process_commands(context, file, line)
   end

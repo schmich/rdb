@@ -7,6 +7,7 @@ require 'thin'
 
 include Sinatra::SSE
 
+set :bind, '0.0.0.0'
 set :server, 'thin'
 
 class CommandClient < Messaging::Client
@@ -32,6 +33,13 @@ class CommandClient < Messaging::Client
   def breakpoint_deleted
     for client in @event_clients
       data = JSON.dump(event: 'breakpoint-deleted')
+      client.push(:data => data)
+    end
+  end
+
+  def step
+    for client in @event_clients
+      data = JSON.dump(event: 'step-hit')
       client.push(:data => data)
     end
   end
