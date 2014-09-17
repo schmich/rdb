@@ -74,7 +74,23 @@ class Messaging::Server
     end
   end
 
-  def broadcast(message, *params)
+  def broadcast
+    @broadcast ||= Class.new do
+      def initialize(server)
+        @server = server
+      end
+
+      def method_missing(symbol, *args, &block)
+        @server.instance_exec {
+          broadcast_message(symbol.to_s, args)
+        }
+      end
+    end.new(self)
+  end
+
+  private
+
+  def broadcast_message(message, *params)
     payload = Messaging::Message.broadcast(message, params.first || {})
     @clients_lock.synchronize {
       @clients.reject! { |socket, client|
@@ -88,8 +104,6 @@ class Messaging::Server
       }
     }
   end
-
-  private
 
   def handle_message(client, message)
     id = message[:id]
