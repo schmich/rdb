@@ -58,7 +58,7 @@ get '/' do
 end
 
 get '/running' do
-  json({ running: client.running? })
+  json(running: client.running?)
 end
 
 get '/threads' do
@@ -73,7 +73,7 @@ get '/threads' do
 end
 
 get '/process' do
-  json({ process: client.process })
+  json(process: client.process)
 end
 
 get '/source' do
@@ -103,27 +103,28 @@ end
 
 put '/pause' do
   running = client.pause
-  json({ running: running })
+  json(running: running)
 end
 
 put '/resume' do
   running = client.resume
-  json({ running: running })
+  json(running: running)
 end
 
+# TODO: Ensure step actually happened.
 put '/step-in' do
   client.step_in
-  json({ result: true })
+  json(success: true)
 end
 
 put '/step-over' do
   client.step_over
-  json({ result: true })
+  json(success: true)
 end
 
 put '/step-out' do
   client.step_out
-  json({ result: true })
+  json(success: true)
 end
 
 put '/eval' do
@@ -147,14 +148,14 @@ post '/breakpoints' do
   line = params['line']
   id = client.add_breakpoint(file: file, line: line)
   client.breakpoint_created
-  json({ id: id })
+  json(id: id)
 end
 
 delete '/breakpoints/:id' do
   id = params[:id].to_i
   result = client.remove_breakpoint(id: id)
   client.breakpoint_deleted
-  json({ success: result })
+  json(success: result)
 end
 
 get '/events' do
