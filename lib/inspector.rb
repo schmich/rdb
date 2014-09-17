@@ -16,7 +16,9 @@ class Inspector
 
     # Range, Regex, Block, Proc, lambda, Thread, Set, ...
     case obj
-    when Fixnum, Float, TrueClass, FalseClass, NilClass, String, Class, Symbol
+    when Class
+      return { class: obj.class.name, content: obj.name }
+    when Fixnum, Float, TrueClass, FalseClass, NilClass, String, Symbol
       return { class: obj.class.name, content: obj }
     when Array
       return { class: obj.class.name, content: obj.map { |x| inspect(x) } }
