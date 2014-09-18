@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.executables = ['rdb']
   s.date = Time.now.strftime('%Y-%m-%d')
   s.summary = 'Browser-based cross-platform Ruby 2.x debugger.'
-  s.description = 'Debug Ruby 2.x from a browser. Includes breakpoints, expression evaluation, call stacks, error handling, and remote debugging.'
+  s.description = 'Browser-based cross-platform Ruby 2.x debugger. Includes breakpoints, expression evaluation, call stacks, error handling, and remote debugging.'
   s.authors = ['Chris Schmich']
   s.email = 'schmch@gmail.com'
   s.files = `git ls-files`.split("\n")
