@@ -269,30 +269,24 @@ class RemoteCommandProcessor < Byebug::Processor
   end
   
   def at_breakpoint(context, breakpoint)
-    puts '> at_breakpoint'
   end
 
   def at_catchpoint(context, excpt)
-    puts '> at_catchpoint'
   end
 
   def at_tracing(context, file, line)
-    puts '> at_tracing'
   end
 
   def at_line(context, file, line)
-    puts "> at_line: #{file}:#{line}, reason: #{context.stop_reason}"
     @server.broadcast.break
     process_commands(context, file, line)
   end
 
   def at_return(context, file, line)
-    puts '> at_return'
     process_commands(context, file, line)
   end
 
   def process_commands(context, file, line)
-    puts "> process_commands @ #{file}:#{line} in #{Thread.current}"
     @server.running = false
     loop do
       command = @server.next_command
