@@ -1,3 +1,8 @@
 #!/usr/bin/env ruby
 
-require 'rdb'
+require 'web'
+
+server = Rdb::DebugServer
+server.set(:bind, 'localhost')
+server.set(:port, 4567)
+server.run!

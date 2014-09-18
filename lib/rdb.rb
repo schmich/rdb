@@ -1,4 +1,5 @@
 require 'rdb/inspector'
 require 'rdb/messaging'
-require 'rdb/rdb'
+require 'rdb/debugger'
+require 'rdb/attach'
 require 'rdb/version'

@@ -301,13 +301,3 @@ class RemoteCommandProcessor < Byebug::Processor
     @server.running = true
   end
 end
-
-def debug_start
-  Byebug.handler = RemoteCommandProcessor.new
-  Byebug.start
-  Byebug.run_init_script(StringIO.new)
-  # TODO: Why 2? 
-  Byebug.current_context.step_out(2, true)
-end
-
-debug_start
