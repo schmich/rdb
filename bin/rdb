@@ -1,8 +1,14 @@
 #!/usr/bin/env ruby
 
 require 'web'
+require 'launchy'
+
+bind = 'localhost'
+port = 4567
 
 server = Rdb::DebugServer
-server.set(:bind, 'localhost')
-server.set(:port, 4567)
-server.run!
+server.set(:bind, bind)
+server.set(:port, port)
+server.run! do
+  Launchy.open("http://localhost:#{port}")
+end
