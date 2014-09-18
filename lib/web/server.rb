@@ -10,41 +10,47 @@ include Sinatra::SSE
 set :bind, '0.0.0.0'
 set :server, 'thin'
 
-class CommandClient < Messaging::Client
-  def initialize(event_clients)
+class EventManager
+  def initialize
+    @clients = []
+  end
+
+  def broadcast(attrs)
+    data = JSON.dump(attrs)
+    for client in @clients
+      client.push(:data => data)
+    end
+  end
+
+  attr_reader :clients
+end
+
+class CommandTarget < Messaging::Client
+  def initialize(event_manager)
     super()
-    @event_clients = event_clients
+    @events = event_manager
   end
 
   remote!
   def break
-    for client in @event_clients
-      data = JSON.dump(event: 'break')
-      client.push(:data => data)
-    end
+    @events.broadcast(event: 'break')
   end
 
   remote!
   def breakpoint_created
-    for client in @event_clients
-      data = JSON.dump(event: 'breakpoint-created')
-      client.push(:data => data)
-    end
+    @events.broadcast(event: 'breakpoint-created')
   end
 
   remote!
   def breakpoint_deleted
-    for client in @event_clients
-      data = JSON.dump(event: 'breakpoint-deleted')
-      client.push(:data => data)
-    end
+    @events.broadcast(event: 'breakpoint-deleted')
   end
 end
 
-event_clients = []
-client = CommandClient.new(event_clients)
+events = EventManager.new
+target = CommandTarget.new(events)
 Thread.new do
-  client.connect_listen('localhost', 4444)
+  target.connect_listen('localhost', 4444)
 end
 
 # TODO: Parameter validation on all calls.
@@ -54,11 +60,11 @@ get '/' do
 end
 
 get '/running' do
-  json(running: client.running?)
+  json(running: target.running?)
 end
 
 get '/threads' do
-  threads = client.threads
+  threads = target.threads
   threads.each do |thread|
     thread['backtrace'].each do |frame|
       frame['file'] = File.basename(frame['path'])
@@ -69,7 +75,7 @@ get '/threads' do
 end
 
 get '/process' do
-  json(process: client.process)
+  json(process: target.process)
 end
 
 get '/source' do
@@ -98,28 +104,28 @@ post '/open' do
 end
 
 put '/pause' do
-  running = client.pause
+  running = target.pause
   json(running: running)
 end
 
 put '/resume' do
-  running = client.resume
+  running = target.resume
   json(running: running)
 end
 
 # TODO: Ensure step actually happened.
 put '/step-in' do
-  client.step_in
+  target.step_in
   json(success: true)
 end
 
 put '/step-over' do
-  client.step_over
+  target.step_over
   json(success: true)
 end
 
 put '/step-out' do
-  client.step_out
+  target.step_out
   json(success: true)
 end
 
@@ -127,33 +133,33 @@ put '/eval' do
   params = JSON.parse(request.body.read)
   expr = params['expr']
   frame = params['frame']
-  json client.eval(expr: expr, frame: frame.to_i)
+  json target.eval(expr: expr, frame: frame.to_i)
 end
 
 get '/locals' do
-  json client.locals
+  json target.locals
 end
 
 get '/breakpoints' do
-  json client.breakpoints
+  json target.breakpoints
 end
 
 post '/breakpoints' do
   params = JSON.parse(request.body.read)
   file = params['file']
   line = params['line']
-  id = client.add_breakpoint(file: file, line: line)
+  id = target.add_breakpoint(file: file, line: line)
   json(id: id)
 end
 
 delete '/breakpoints/:id' do
   id = params[:id].to_i
-  result = client.remove_breakpoint(id: id)
+  result = target.remove_breakpoint(id: id)
   json(success: result)
 end
 
 get '/events' do
   sse_stream do |out|
-    event_clients << out
+    events.clients << out
   end
 end
