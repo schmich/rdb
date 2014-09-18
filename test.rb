@@ -1,3 +1,7 @@
+require 'rdb'
+
+debugger
+
 =begin
 t1 = Thread.new do
   loop do

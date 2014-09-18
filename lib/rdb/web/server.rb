@@ -94,7 +94,7 @@ module Rdb
     # Remote callers can request any file.
     # TODO: Lots of security checks needed here to
     # prevent arbitrary execution.
-    post '/open' do
+    post '/edit' do
       params = JSON.parse(request.body.read)
       path = params['path']
       line = params['line']
