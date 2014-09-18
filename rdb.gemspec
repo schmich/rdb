@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'msgpack', '~> 0.5.8'
   s.add_runtime_dependency 'cod', '~> 0.5.0'
   s.add_runtime_dependency 'launchy', '~> 2.4.2'
+  s.add_runtime_dependency 'thor', '~> 0.19.1'
   s.add_runtime_dependency 'thin', '~> 1.4.1'
   s.add_development_dependency 'rake', '~> 10.3.2'
 end
