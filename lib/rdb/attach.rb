@@ -1,6 +1,8 @@
+require 'rdb/debugger'
+
 module Kernel
   def rdb
-    Byebug.handler = RemoteCommandProcessor.new
+    Byebug.handler = Rdb::RemoteCommandProcessor.new
     Byebug.start
     Byebug.run_init_script(StringIO.new)
     Byebug.current_context.step_out(1, true)

@@ -1,3 +1,4 @@
+require 'rdb/messaging'
 require 'sinatra'
 require 'sinatra/json'
 require 'sinatra/sse'

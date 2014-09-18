@@ -1,5 +1,1 @@
-require 'rdb/inspector'
-require 'rdb/messaging'
-require 'rdb/debugger'
 require 'rdb/attach'
-require 'rdb/version'

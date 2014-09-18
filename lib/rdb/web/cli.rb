@@ -1,3 +1,4 @@
+require 'rdb/version'
 require 'thor'
 require 'launchy'
 
