@@ -1,4 +1,5 @@
 require 'rdb/version'
+require 'rdb/settings'
 require 'thor'
 require 'launchy'
 
@@ -13,14 +14,18 @@ module Rdb
         return
       end
  
-      bind = options[:host] || 'localhost'
-      port = options[:port] || 4567
+      settings = AppSettings.new({
+        web: {
+          host: options[:host],
+          port: options[:port]
+        }
+      })
 
       server = Rdb::DebugServer
-      server.set(:bind, bind)
-      server.set(:port, port)
+      server.set(:bind, settings.web.host)
+      server.set(:port, settings.web.port)
       server.run! do
-        Launchy.open("http://localhost:#{port}")
+        Launchy.open("http://localhost:#{settings.web.port}")
       end
     end
 
