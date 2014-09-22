@@ -96,3 +96,4 @@ module Rdb
 
     FILE = File.join(Dir.home, '.rdb', 'settings.json')
   end
+end
