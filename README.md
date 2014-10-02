@@ -6,4 +6,4 @@ Shh, it's a secret (for now).
 
 Copyright &copy; 2014 Chris Schmich
 <br />
-MIT License, See [LICENSE](LICENSE) for details.
+MIT License. See [LICENSE](LICENSE) for details.
